@@ -23,9 +23,6 @@ for dominio in dominios:
     # ✅ Localiza a barra de pesquisa pelo ID
     # No site registro.br, o campo tem id="is-avail-field"
     pesquisa = driver.find_element(By.ID, "is-avail-field")
-    pesquisa.clear() # Limpa o campo antes de digitar# ✅ Localiza a barra de pesquisa pelo ID
-    # No site registro.br, o campo tem id="is-avail-field"
-    pesquisa = driver.find_element(By.ID, "is-avail-field")
     pesquisa.clear() # Limpa o campo antes de digitar
     pesquisa.send_keys(dominio) # Digita o domínio desejado
     pesquisa.send_keys(Keys.RETURN) # Pressiona ENTER para pesquisar
