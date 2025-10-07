@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service  # Forma correta no Selenium 4+
 from selenium.webdriver.common.keys import Keys       # Teclas do teclado (ex: ENTER)
 from selenium.webdriver.common.by import By           # ✅ Import necessário para localizar elementos
+import openpyxl                                       # ⬅️ Lista que está no excel
 import time
 
 from selenium.webdriver.chrome.options import Options
@@ -12,18 +13,22 @@ options.add_experimental_option('excludeSwitches', ['enable-logging'])  # Remove
 
 print("Iniciando nosso robô...\n")
 
+dominios = []
+#  Lendo arquivo Excel com openpyxl
+workbook = openpyxl.load_workbook('dominio.xlsx')  # ⬅️ use .xlsx, não .xlrx
+sheet = workbook.active # Pega a primeira aba
+
+for line in sheet.iter_rows(min_row=1, max_col=1, values_only=True): # Loop pelas linhas da primeira coluna
+    dominios.append(line[0])
+
 # Caminho do ChromeDriver
 service = Service(r'C:\Users\Luigg\Desktop\Robos\chromedriver.exe')
 driver = webdriver.Chrome(service=service, options=options)
 # Abre o site
 driver.get("https://registro.br/")
 
-dominios = ["roboscompython.com.br" , "udemy.com" , "uol.com.br" , "pythoncurso.com"] #vai pesquisar uma lista
 for dominio in dominios:
     # ✅ Localiza a barra de pesquisa pelo ID
-    # No site registro.br, o campo tem id="is-avail-field"
-    pesquisa = driver.find_element(By.ID, "is-avail-field")
-    pesquisa.clear() # Limpa o campo antes de digitar# ✅ Localiza a barra de pesquisa pelo ID
     # No site registro.br, o campo tem id="is-avail-field"
     pesquisa = driver.find_element(By.ID, "is-avail-field")
     pesquisa.clear() # Limpa o campo antes de digitar
