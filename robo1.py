@@ -12,7 +12,7 @@ options = Options()
 options.add_experimental_option('excludeSwitches', ['enable-logging'])  # Remove mensagens extras do Chrome
 
 print("Iniciando nosso robô...\n")
-
+arq = open("resultado.txt","w")
 dominios = []
 #  Lendo arquivo Excel com openpyxl
 workbook = openpyxl.load_workbook('dominio.xlsx')  # ⬅️ use .xlsx, não .xlrx
@@ -20,9 +20,9 @@ sheet = workbook.active # Pega a primeira aba
 
 for line in sheet.iter_rows(min_row=1, max_col=1, values_only=True): # Loop pelas linhas da primeira coluna
     dominios.append(line[0])
+    
 
-# Caminho do ChromeDriver
-service = Service(r'C:\Users\Luigg\Desktop\Robos\chromedriver.exe')
+service = Service(r'C:\Users\Luigg\Desktop\Robos\chromedriver.exe') # Caminho do ChromeDriver
 driver = webdriver.Chrome(service=service, options=options)
 # Abre o site
 driver.get("https://registro.br/")
@@ -36,7 +36,9 @@ for dominio in dominios:
     pesquisa.send_keys(Keys.RETURN) # Pressiona ENTER para pesquisar
     time.sleep(2)
     resultados = driver.find_elements(By.TAG_NAME, "strong")
-    print("Domínio %s %s" % (dominio, resultados[2].text))
+    texto = ("Domínio %s: %s\n" % (dominio, resultados[2].text))
+    arq.write(texto)
 
+arq.close()
 time.sleep(3)
 driver.close() # Fecha o navegador
